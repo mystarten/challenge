@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BlueTech Robotics — Robots de piscine intelligents</title>
+  <meta name="description" content="BlueTech Robotics — Robots de piscine nouvelle génération. Fabriqués en France." />
+
+  <!-- Favicon SVG inline -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M20 3C20 3 7 15.5 7 24a13 13 0 0026 0C33 15.5 20 3 20 3z' fill='%230a2540'/%3E%3Ctext x='20' y='30' text-anchor='middle' fill='%2300aeef' font-family='Inter,sans-serif' font-weight='800' font-size='13'%3EBT%3C/text%3E%3C/svg%3E" type="image/svg+xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #fafafa;
+      color: #1a1a1a;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* ===== VARIABLES ===== */
+    :root {
+      --blue-deep: #0a2540;
+      --blue-mid:  #003b73;
+      --blue-accent: #00aeef;
+      --bg: #fafafa;
+      --bg-gray: #f4f4f5;
+      --text: #1a1a1a;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --radius: 6px;
+    }
+
+    /* ===== UTILITIES ===== */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 14px 28px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.22s ease;
+      letter-spacing: 0.01em;
+      border: 2px solid transparent;
+    }
+    .btn-primary {
+      background: var(--blue-accent);
+      color: #fff;
+      border-color: var(--blue-accent);
+    }
+    .btn-primary:hover {
+      background: #009dd4;
+      border-color: #009dd4;
+      transform: translateY(-1px);
+    }
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border-color: rgba(255,255,255,0.6);
+    }
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: #fff;
+    }
+    .btn-outline-dark {
+      background: transparent;
+      color: var(--blue-deep);
+      border-color: var(--blue-deep);
+    }
+    .btn-outline-dark:hover {
+      background: var(--blue-deep);
+      color: #fff;
+    }
+    .btn-white {
+      background: #fff;
+      color: var(--blue-deep);
+      border-color: #fff;
+    }
+    .btn-white:hover {
+      background: #f0f9ff;
+      transform: translateY(-1px);
+    }
+
+    /* ===== FADE-IN ANIMATION ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ===== HEADER ===== */
+    #header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    #header.scrolled {
+      border-color: var(--border);
+      box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .logo-wordmark {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--blue-deep);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .logo-wordmark span {
+      display: block;
+      font-size: 0.65rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .nav a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #374151;
+      transition: color 0.2s;
+    }
+    .nav a:hover { color: var(--blue-deep); }
+    .header-cta { display: flex; align-items: center; gap: 12px; }
+
+    /* Hamburger */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .menu-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--blue-deep);
+      transition: all 0.25s;
+    }
+
+    /* ===== HERO ===== */
+    #hero {
+      position: relative;
+      height: 90vh;
+      min-height: 560px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?auto=format&fit=crop&w=1920&q=80');
+      background-size: cover;
+      background-position: center;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        105deg,
+        rgba(10,37,64,0.82) 0%,
+        rgba(10,37,64,0.55) 60%,
+        rgba(10,37,64,0.25) 100%
+      );
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,174,239,0.18);
+      border: 1px solid rgba(0,174,239,0.4);
+      color: #7dd3f0;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 2px;
+      margin-bottom: 28px;
+    }
+    .hero-badge::before {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #00aeef;
+    }
+    .hero-title {
+      font-size: clamp(2rem, 4.5vw, 3.4rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+    .hero-subtitle {
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      font-weight: 400;
+      color: rgba(255,255,255,0.78);
+      line-height: 1.65;
+      margin-bottom: 40px;
+      max-width: 520px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      z-index: 2;
+    }
+    .scroll-hint-arrow {
+      width: 20px;
+      height: 32px;
+      border: 1.5px solid rgba(255,255,255,0.35);
+      border-radius: 10px;
+      position: relative;
+    }
+    .scroll-hint-arrow::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 50%;
+      left: 50%;
+      top: 6px;
+      transform: translateX(-50%);
+      animation: scrollDown 1.8s ease infinite;
+    }
+    @keyframes scrollDown {
+      0%   { top: 6px;  opacity: 1; }
+      80%  { top: 18px; opacity: 0; }
+      100% { top: 6px;  opacity: 0; }
+    }
+
+    /* ===== SECTION TITLES ===== */
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue-accent);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 800;
+      color: var(--blue-deep);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      line-height: 1.65;
+    }
+    section { padding: 96px 0; }
+
+    /* ===== PRODUITS ===== */
+    #produits { background: #fff; }
+    .products-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .product-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+      position: relative;
+    }
+    .product-card:hover {
+      border-color: #c0d8ee;
+      box-shadow: 0 8px 32px rgba(10,37,64,0.08);
+      transform: translateY(-3px);
+    }
+    .product-img-wrap {
+      position: relative;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      background: #f0f4f8;
+    }
+    .product-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .product-card:hover .product-img-wrap img {
+      transform: scale(1.04);
+    }
+    .badge-new {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--blue-accent);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 2px;
+      z-index: 2;
+    }
+    .product-body {
+      padding: 22px 24px 26px;
+    }
+    .product-type {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blue-accent);
+      margin-bottom: 6px;
+    }
+    .product-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--blue-deep);
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .product-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding-top: 18px;
+    }
+    .product-price {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--blue-deep);
+    }
+    .product-price small {
+      font-weight: 400;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 2px;
+    }
+    .product-link {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--blue-accent);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: gap 0.2s;
+    }
+    .product-link:hover { gap: 8px; }
+
+    /* ===== TECHNOLOGIE ===== */
+    #technologie { background: var(--bg-gray); }
+    .techno-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .techno-img {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      aspect-ratio: 4/3;
+    }
+    .techno-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .techno-img-accent {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--blue-accent);
+    }
+    .techno-text { }
+    .techno-text p {
+      font-size: 0.95rem;
+      color: #4b5563;
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      border-top: 1px solid var(--border);
+      padding-top: 40px;
+    }
+    .stat-item {}
+    .stat-value {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--blue-deep);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-value span { color: var(--blue-accent); }
+    .stat-label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* ===== TEMOIGNAGES ===== */
+    #temoignages { background: #fff; }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 56px;
+    }
+    .testimonial-card {
+      padding: 32px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      position: relative;
+    }
+    .testimonial-card::before {
+      content: '"';
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      font-size: 4rem;
+      line-height: 1;
+      color: #e8f4fc;
+      font-family: Georgia, serif;
+      font-weight: 700;
+    }
+    .stars {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 18px;
+    }
+    .star {
+      width: 14px;
+      height: 14px;
+      fill: #f59e0b;
+    }
+    .testimonial-quote {
+      font-size: 0.92rem;
+      font-style: italic;
+      color: #374151;
+      line-height: 1.65;
+      margin-bottom: 24px;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .author-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--bg-gray);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .author-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .author-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--blue-deep);
+    }
+    .author-location {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ===== RSE ===== */
+    #rse { background: var(--blue-deep); color: #fff; }
+    .rse-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .rse-text .section-title { color: #fff; }
+    .rse-text .section-label { color: rgba(0,174,239,0.9); }
+    .rse-text p {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+    }
+    .rse-items {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    .rse-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .rse-icon {
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(0,174,239,0.3);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: rgba(0,174,239,0.08);
+    }
+    .rse-icon svg { width: 22px; height: 22px; stroke: var(--blue-accent); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .rse-item-text strong {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .rse-item-text p {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.5;
+    }
+
+    /* ===== CTA FINAL ===== */
+    #cta-final {
+      background: var(--blue-accent);
+      padding: 80px 0;
+    }
+    .cta-inner {
+      text-align: center;
+    }
+    .cta-inner h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+    .cta-inner p {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.82);
+      margin-bottom: 36px;
+    }
+
+    /* ===== FOOTER ===== */
+    #footer {
+      background: #050f1c;
+      color: rgba(255,255,255,0.55);
+      padding: 72px 0 40px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1.5fr;
+      gap: 48px;
+      margin-bottom: 56px;
+    }
+    .footer-brand {}
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .footer-logo-text {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .footer-logo-text span {
+      display: block;
+      font-size: 0.6rem;
+      font-weight: 400;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .footer-brand p {
+      font-size: 0.82rem;
+      line-height: 1.65;
+      max-width: 260px;
+      color: rgba(255,255,255,0.45);
+    }
+    .footer-col h4 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 18px;
+    }
+    .footer-col ul { display: flex; flex-direction: column; gap: 10px; }
+    .footer-col a {
+      font-size: 0.84rem;
+      color: rgba(255,255,255,0.5);
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: #fff; }
+    .footer-contact address {
+      font-style: normal;
+      font-size: 0.82rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.45);
+    }
+    .footer-contact a {
+      color: rgba(0,174,239,0.8);
+      font-size: 0.84rem;
+    }
+    .footer-contact a:hover { color: var(--blue-accent); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-bottom p { font-size: 0.76rem; }
+    .footer-legal {
+      display: flex;
+      gap: 20px;
+    }
+    .footer-legal a {
+      font-size: 0.76rem;
+      color: rgba(255,255,255,0.3);
+      transition: color 0.2s;
+    }
+    .footer-legal a:hover { color: rgba(255,255,255,0.6); }
+
+    /* ===== MOBILE NAV ===== */
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 68px;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px 20px;
+      gap: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #374151;
+      padding: 4px 0;
+    }
+    .mobile-nav .btn { align-self: flex-start; margin-top: 4px; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .techno-inner { grid-template-columns: 1fr; gap: 40px; }
+      .techno-img { aspect-ratio: 16/7; }
+      .rse-inner { grid-template-columns: 1fr; gap: 40px; }
+    }
+    @media (max-width: 768px) {
+      section { padding: 64px 0; }
+      .nav, .header-cta { display: none; }
+      .menu-toggle { display: flex; }
+      #header { position: relative; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .products-header { margin-bottom: 36px; }
+    }
+    @media (max-width: 540px) {
+      .products-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .hero-actions { flex-direction: column; }
+      .hero-actions .btn { text-align: center; }
+      .stats-row { grid-template-columns: 1fr; gap: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header id="header">
+    <div class="container">
+      <div class="header-inner">
+
+        <!-- Logo -->
+        <a href="#" class="logo" aria-label="BlueTech Robotics — Accueil">
+          <img src="logo.png" alt="BlueTech Robotics" style="height:52px;width:auto;border-radius:10px;" />
+        </a>
+
+        <!-- Navigation desktop -->
+        <nav class="nav" aria-label="Navigation principale">
+          <a href="#">Accueil</a>
+          <a href="#produits">Produits</a>
+          <a href="#technologie">Technologie</a>
+          <a href="#rse">À propos</a>
+          <a href="#footer">Contact</a>
+        </nav>
+
+        <!-- CTA desktop -->
+        <div class="header-cta">
+          <a href="#produits" class="btn btn-primary" style="padding: 10px 22px; font-size: 0.82rem;">Acheter</a>
+        </div>
+
+        <!-- Hamburger mobile -->
+        <button class="menu-toggle" id="menuToggle" aria-label="Ouvrir le menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <!-- Navigation mobile -->
+      <nav class="mobile-nav" id="mobileNav" aria-label="Navigation mobile">
+        <a href="#">Accueil</a>
+        <a href="#produits">Produits</a>
+        <a href="#technologie">Technologie</a>
+        <a href="#rse">À propos</a>
+        <a href="#footer">Contact</a>
+        <a href="#produits" class="btn btn-primary">Acheter</a>
+      </nav>
+    </div>
+  </header>
+
+
+  <!-- ===== HERO ===== -->
+  <section id="hero" aria-label="Présentation BlueTech Robotics">
+    <div class="hero-bg" role="img" aria-label="Piscine vue du ciel avec robot de nettoyage"></div>
+    <div class="hero-overlay"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">Nouveauté 2026 — Fabriqué en France</div>
+        <h1 class="hero-title">
+          L'intelligence artificielle<br>au service de votre piscine
+        </h1>
+        <p class="hero-subtitle">
+          Robots nouvelle génération conçus et fabriqués en France.
+          Nettoient, régulent, chauffent — sans effort, sans faille.
+        </p>
+        <div class="hero-actions">
+          <a href="#produits" class="btn btn-primary">Découvrir nos robots</a>
+          <a href="#technologie" class="btn btn-outline">Voir la technologie</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="scroll-hint" aria-hidden="true">
+      <div class="scroll-hint-arrow"></div>
+      <span style="margin-top:4px;">Défiler</span>
+    </div>
+  </section>
+
+
+  <!-- ===== PRODUITS ===== -->
+  <section id="produits">
+    <div class="container">
+      <div class="products-header">
+        <div>
+          <p class="section-label reveal">Notre gamme</p>
+          <h2 class="section-title reveal reveal-delay-1">Quatre robots.<br>Une seule obsession.</h2>
+        </div>
+        <p class="section-sub reveal reveal-delay-2" style="text-align:right; max-width:340px;">
+          Chaque modèle est conçu pour une mission précise. Ou pour tout faire à la fois.
+        </p>
+      </div>
+
+      <div class="products-grid">
+
+        <!-- U Clean -->
+        <div class="product-card reveal">
+          <div class="product-img-wrap">
+            <img
+              src="https://images.unsplash.com/photo-1754297813952-fd2ca3e9f041?auto=format&fit=crop&w=600&q=80"
+              alt="Robot U Clean — aspirateur autonome de piscine"
+              loading="lazy"
+            />
+          </div>
+          <div class="product-body">
+            <p class="product-type">Nettoyage</p>
+            <h3 class="product-name">U Clean</h3>
+            <p class="product-desc">Nettoie votre piscine 24h/24, sans intervention.</p>
+            <div class="product-footer">
+              <div class="product-price">
+                <small>À partir de</small>
+                1 190 €
+              </div>
+              <a href="u-clean.html" class="product-link">
+                En savoir plus
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- U Stab -->
+        <div class="product-card reveal reveal-delay-1">
+          <div class="product-img-wrap">
+            <img
+              src="https://images.unsplash.com/photo-1754297813436-28cba2aec2da?auto=format&fit=crop&w=600&q=80"
+              alt="Robot U Stab — régulateur de pH autonome"
+              loading="lazy"
+            />
+          </div>
+          <div class="product-body">
+            <p class="product-type">Équilibre chimique</p>
+            <h3 class="product-name">U Stab</h3>
+            <p class="product-desc">Équilibre automatique du pH pour une eau toujours cristalline.</p>
+            <div class="product-footer">
+              <div class="product-price">
+                <small>À partir de</small>
+                1 490 €
+              </div>
+              <a href="u-stab.html" class="product-link">
+                En savoir plus
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- U Heat -->
+        <div class="product-card reveal reveal-delay-2">
+          <div class="product-img-wrap">
+            <img
+              src="https://images.unsplash.com/photo-1754297813652-27093ad39a2f?auto=format&fit=crop&w=600&q=80"
+              alt="Robot U Heat — régulateur de température de piscine"
+              loading="lazy"
+            />
+          </div>
+          <div class="product-body">
+            <p class="product-type">Température</p>
+            <h3 class="product-name">U Heat</h3>
+            <p class="product-desc">Une eau à température idéale, toute l'année, en consommant moins.</p>
+            <div class="product-footer">
+              <div class="product-price">
+                <small>À partir de</small>
+                1 990 €
+              </div>
+              <a href="u-heat.html" class="product-link">
+                En savoir plus
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Multifonction -->
+        <div class="product-card reveal reveal-delay-3">
+          <div class="product-img-wrap">
+            <span class="badge-new">Nouveau</span>
+            <img
+              src="https://images.unsplash.com/photo-1754297813553-43eb3a9f65a4?auto=format&fit=crop&w=600&q=80"
+              alt="Robot Multifonction — tout-en-un nettoyage pH température"
+              loading="lazy"
+            />
+          </div>
+          <div class="product-body">
+            <p class="product-type">Tout-en-un</p>
+            <h3 class="product-name">Multifonction</h3>
+            <p class="product-desc">Nettoyage, pH et température. Dans un seul robot.</p>
+            <div class="product-footer">
+              <div class="product-price">
+                <small>À partir de</small>
+                3 495 €
+              </div>
+              <a href="multifonction.html" class="product-link">
+                En savoir plus
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===== TECHNOLOGIE ===== -->
+  <section id="technologie">
+    <div class="container">
+      <div class="techno-inner">
+        <div class="techno-img reveal">
+          <img
+            src="https://images.unsplash.com/photo-1565043666747-69f6646db940?auto=format&fit=crop&w=900&q=80"
+            alt="Atelier d'assemblage BlueTech Robotics — composants de précision"
+            loading="lazy"
+          />
+          <div class="techno-img-accent"></div>
+        </div>
+        <div class="techno-text reveal reveal-delay-1">
+          <p class="section-label">Ingénierie</p>
+          <h2 class="section-title">
+            Ingénierie française,<br>
+            précision allemande,<br>
+            composants japonais
+          </h2>
+          <p>
+            Chaque robot BlueTech est assemblé dans notre usine française avec des composants
+            de précision fabriqués par nos partenaires NIKKAI (Japon) et intégrés sur nos
+            machines AZ1 (Allemagne). Un savoir-faire sans concession, contrôlé à 100% avant
+            expédition.
+          </p>
+          <div class="stats-row">
+            <div class="stat-item">
+              <div class="stat-value">100<span>%</span></div>
+              <div class="stat-label">Contrôle qualité<br>avant expédition</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">10<span> ans</span></div>
+              <div class="stat-label">Garantie<br>constructeur</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">72<span>h</span></div>
+              <div class="stat-label">Livraison<br>France métro.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===== TEMOIGNAGES ===== -->
+  <section id="temoignages">
+    <div class="container">
+      <div class="reveal">
+        <p class="section-label">Avis clients</p>
+        <h2 class="section-title">Ils nous font confiance</h2>
+      </div>
+      <div class="testimonials-grid">
+
+        <div class="testimonial-card reveal reveal-delay-1">
+          <div class="stars" aria-label="5 étoiles sur 5">
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="testimonial-quote">
+            "Plus simple qu'un smartphone. L'eau est toujours parfaite, je n'ai plus à y toucher. Le U Stab a changé ma routine du week-end."
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&q=80" alt="" aria-hidden="true" loading="lazy" />
+            </div>
+            <div>
+              <div class="author-name">Julien M.</div>
+              <div class="author-location">Aix-en-Provence</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal reveal-delay-2">
+          <div class="stars" aria-label="5 étoiles sur 5">
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="testimonial-quote">
+            "J'ai divisé par quatre le temps passé sur l'entretien de ma piscine. Le U Clean passe chaque nuit, le bassin est impeccable chaque matin."
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&q=80" alt="" aria-hidden="true" loading="lazy" />
+            </div>
+            <div>
+              <div class="author-name">Sophie L.</div>
+              <div class="author-location">Bordeaux</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal reveal-delay-3">
+          <div class="stars" aria-label="5 étoiles sur 5">
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="testimonial-quote">
+            "Le Multifonction fait vraiment tout. Je ne regarde plus mon bassin — il se gère seul. Le service après-vente est également remarquable."
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=80&q=80" alt="" aria-hidden="true" loading="lazy" />
+            </div>
+            <div>
+              <div class="author-name">Thomas R.</div>
+              <div class="author-location">Lyon</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===== RSE ===== -->
+  <section id="rse">
+    <div class="container">
+      <div class="rse-inner">
+        <div class="rse-text reveal">
+          <p class="section-label">Responsabilité</p>
+          <h2 class="section-title" style="color:#fff;">Une entreprise<br>responsable</h2>
+          <p>
+            Construire des robots durables, c'est aussi construire une entreprise durable.
+            Nos choix industriels sont guidés par une conviction simple : performance
+            et responsabilité ne s'opposent pas.
+          </p>
+        </div>
+        <div class="rse-items reveal reveal-delay-2">
+
+          <div class="rse-item">
+            <div class="rse-icon">
+              <!-- Maison / fabrication locale -->
+              <svg viewBox="0 0 24 24">
+                <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
+                <path d="M9 21V12h6v9"/>
+              </svg>
+            </div>
+            <div class="rse-item-text">
+              <strong>Fabrication 100% française</strong>
+              <p>Assemblage, tests et expédition réalisés depuis notre usine à Grenoble.</p>
+            </div>
+          </div>
+
+          <div class="rse-item">
+            <div class="rse-icon">
+              <!-- Énergie / soleil -->
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="5"/>
+                <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+              </svg>
+            </div>
+            <div class="rse-item-text">
+              <strong>Énergie 100% renouvelable</strong>
+              <p>Nos ateliers fonctionnent exclusivement à l'énergie solaire et hydraulique.</p>
+            </div>
+          </div>
+
+          <div class="rse-item">
+            <div class="rse-icon">
+              <!-- Recyclage -->
+              <svg viewBox="0 0 24 24">
+                <path d="M3 12a9 9 0 1118 0"/>
+                <path d="M12 3l3 3-3 3"/>
+                <path d="M3 12l3 3-3 3"/>
+                <path d="M21 12l-3-3 3-3"/>
+              </svg>
+            </div>
+            <div class="rse-item-text">
+              <strong>Zéro plastique à usage unique</strong>
+              <p>Emballages 100% recyclables, carton FSC et calage biodégradable uniquement.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===== CTA FINAL ===== -->
+  <section id="cta-final">
+    <div class="container">
+      <div class="cta-inner reveal">
+        <h2>Prêt à transformer votre piscine ?</h2>
+        <p>Devis personnalisé gratuit sous 24h.</p>
+        <a href="#footer" class="btn btn-white">Demander un devis</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===== FOOTER ===== -->
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-grid">
+
+        <!-- Brand -->
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <img src="logo.png" alt="BlueTech Robotics" style="height:60px;width:auto;border-radius:10px;" />
+          </div>
+          <p>
+            Pionnier français de la robotique de piscine. Des produits pensés pour durer,
+            conçus pour simplifier et fabriqués pour performer.
+          </p>
+        </div>
+
+        <!-- Produits -->
+        <div class="footer-col">
+          <h4>Produits</h4>
+          <ul>
+            <li><a href="#">U Clean</a></li>
+            <li><a href="#">U Stab</a></li>
+            <li><a href="#">U Heat</a></li>
+            <li><a href="#">Multifonction</a></li>
+            <li><a href="#">Accessoires</a></li>
+          </ul>
+        </div>
+
+        <!-- Entreprise -->
+        <div class="footer-col">
+          <h4>Entreprise</h4>
+          <ul>
+            <li><a href="#">À propos</a></li>
+            <li><a href="#">Engagement RSE</a></li>
+            <li><a href="#">Carrières</a></li>
+            <li><a href="#">Presse</a></li>
+            <li><a href="#">Partenaires</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div class="footer-col footer-contact">
+          <h4>Contact</h4>
+          <address>
+            BlueTech Robotics SAS<br>
+            12 rue de l'Innovation<br>
+            38000 Grenoble, France<br>
+            <br>
+            <a href="tel:+33476000000">+33 (0)4 76 00 00 00</a><br>
+            <a href="mailto:contact@bluetech-robotics.fr">contact@bluetech-robotics.fr</a>
+          </address>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 BlueTech Robotics SAS. Tous droits réservés.</p>
+        <div class="footer-legal">
+          <a href="#">Mentions légales</a>
+          <a href="#">CGV</a>
+          <a href="#">Politique de confidentialité</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <script>
+    // ===== HEADER SCROLL SHADOW =====
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 10);
+    }, { passive: true });
+
+    // ===== HAMBURGER MENU =====
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileNav  = document.getElementById('mobileNav');
+    menuToggle.addEventListener('click', () => {
+      const isOpen = mobileNav.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', isOpen);
+    });
+    mobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileNav.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // ===== SCROLL REVEAL =====
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  </script>
+
+</body>
+</html>

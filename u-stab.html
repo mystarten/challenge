@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>U Stab — Régulateur de pH autonome | BlueTech Robotics</title>
+  <meta name="description" content="U Stab, le robot régulateur de pH BlueTech. Équilibre automatique de l'eau, 24h/24. Fabriqué en France." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M20 3C20 3 7 15.5 7 24a13 13 0 0026 0C33 15.5 20 3 20 3z' fill='%230a2540'/%3E%3Ctext x='20' y='30' text-anchor='middle' fill='%2300aeef' font-family='Inter,sans-serif' font-weight='800' font-size='13'%3EBT%3C/text%3E%3C/svg%3E" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #fafafa; color: #1a1a1a; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    :root { --blue-deep: #0a2540; --blue-accent: #00aeef; --bg-gray: #f4f4f5; --text-muted: #6b7280; --border: #e5e7eb; --radius: 6px; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .btn { display: inline-block; padding: 14px 28px; font-size: 0.9rem; font-weight: 600; border-radius: var(--radius); cursor: pointer; transition: all 0.22s ease; border: 2px solid transparent; }
+    .btn-primary { background: var(--blue-accent); color: #fff; border-color: var(--blue-accent); }
+    .btn-primary:hover { background: #009dd4; transform: translateY(-1px); }
+    .btn-outline-dark { background: transparent; color: var(--blue-deep); border-color: var(--blue-deep); }
+    .btn-outline-dark:hover { background: var(--blue-deep); color: #fff; }
+    .btn-white { background: #fff; color: var(--blue-deep); border-color: #fff; }
+    .btn-white:hover { background: #f0f9ff; transform: translateY(-1px); }
+    #header { position: sticky; top: 0; z-index: 100; background: #fff; border-bottom: 1px solid transparent; transition: border-color 0.25s, box-shadow 0.25s; }
+    #header.scrolled { border-color: var(--border); box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-wordmark { font-size: 1rem; font-weight: 700; color: var(--blue-deep); letter-spacing: -0.02em; line-height: 1.2; }
+    .logo-wordmark span { display: block; font-size: 0.65rem; font-weight: 400; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; }
+    .nav { display: flex; align-items: center; gap: 32px; }
+    .nav a { font-size: 0.875rem; font-weight: 500; color: #374151; transition: color 0.2s; }
+    .nav a:hover, .nav a.active { color: var(--blue-deep); }
+    .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .menu-toggle span { display: block; width: 22px; height: 2px; background: var(--blue-deep); }
+    .mobile-nav { display: none; flex-direction: column; position: absolute; top: 68px; left: 0; right: 0; background: #fff; border-bottom: 1px solid var(--border); padding: 16px 24px 20px; gap: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a { font-size: 0.95rem; font-weight: 500; color: #374151; padding: 4px 0; }
+    .breadcrumb { padding: 16px 0; border-bottom: 1px solid var(--border); background: #fff; }
+    .breadcrumb-inner { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--text-muted); }
+    .breadcrumb-inner a { color: var(--text-muted); transition: color 0.2s; }
+    .breadcrumb-inner a:hover { color: var(--blue-deep); }
+    .breadcrumb-sep { color: #d1d5db; }
+    .product-hero { padding: 72px 0 80px; }
+    .product-hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .product-hero-img { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 4/3; background: #e8f4fb; }
+    .product-hero-img img { width: 100%; height: 100%; object-fit: cover; }
+    .product-hero-img-accent { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: var(--blue-accent); }
+    .product-tag { display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue-accent); margin-bottom: 12px; }
+    .product-hero-name { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; color: var(--blue-deep); letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 8px; }
+    .product-hero-tagline { font-size: 1.15rem; font-weight: 500; color: #374151; margin-bottom: 20px; }
+    .product-hero-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 36px; max-width: 480px; }
+    .product-price-block { margin-bottom: 32px; }
+    .product-price-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; margin-bottom: 4px; }
+    .product-price-value { font-size: 2rem; font-weight: 800; color: var(--blue-deep); letter-spacing: -0.03em; }
+    .product-price-vat { font-size: 0.78rem; color: var(--text-muted); font-weight: 400; margin-left: 6px; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+    .product-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+    .chip { display: inline-flex; align-items: center; gap: 6px; background: #f0f9ff; border: 1px solid #bae6fd; color: #0369a1; font-size: 0.75rem; font-weight: 600; padding: 5px 12px; border-radius: 20px; }
+    .chip svg { width: 13px; height: 13px; stroke: #0369a1; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .specs-section { padding: 80px 0; background: var(--bg-gray); }
+    .specs-title { font-size: 1.6rem; font-weight: 800; color: var(--blue-deep); letter-spacing: -0.03em; margin-bottom: 48px; }
+    .specs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .spec-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 24px; }
+    .spec-icon { width: 44px; height: 44px; background: #f0f9ff; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .spec-icon svg { width: 22px; height: 22px; stroke: var(--blue-accent); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .spec-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+    .spec-value { font-size: 1.4rem; font-weight: 700; color: var(--blue-deep); letter-spacing: -0.02em; margin-bottom: 4px; }
+    .spec-note { font-size: 0.78rem; color: var(--text-muted); }
+    .features-section { padding: 80px 0; }
+    .features-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .features-img { border-radius: var(--radius); overflow: hidden; aspect-ratio: 1; }
+    .features-img img { width: 100%; height: 100%; object-fit: cover; }
+    .features-list { display: flex; flex-direction: column; gap: 32px; }
+    .feature-item { display: flex; gap: 20px; align-items: flex-start; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+    .feature-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .feature-num { font-size: 0.7rem; font-weight: 700; color: var(--blue-accent); letter-spacing: 0.05em; min-width: 24px; padding-top: 3px; }
+    .feature-title { font-size: 0.95rem; font-weight: 700; color: var(--blue-deep); margin-bottom: 6px; }
+    .feature-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+    .tech-section { padding: 80px 0; background: var(--bg-gray); }
+    .tech-table { width: 100%; border-collapse: collapse; margin-top: 40px; }
+    .tech-table th { text-align: left; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); padding: 12px 16px; background: #edf2f7; border-bottom: 2px solid var(--border); }
+    .tech-table td { padding: 14px 16px; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+    .tech-table tr:last-child td { border-bottom: none; }
+    .tech-table td:first-child { color: var(--text-muted); font-weight: 500; width: 40%; }
+    .tech-table td:last-child { color: var(--blue-deep); font-weight: 600; }
+    .tech-table tr:hover td { background: #f9fafb; }
+    .cta-section { padding: 80px 0; background: var(--blue-deep); }
+    .cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+    .cta-text h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; color: #fff; letter-spacing: -0.03em; margin-bottom: 8px; }
+    .cta-text p { font-size: 0.95rem; color: rgba(255,255,255,0.65); }
+    .related-section { padding: 80px 0; }
+    .section-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue-accent); margin-bottom: 12px; }
+    .section-title { font-size: clamp(1.5rem, 2.5vw, 2rem); font-weight: 800; color: var(--blue-deep); letter-spacing: -0.03em; margin-bottom: 40px; }
+    .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .related-card { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s; }
+    .related-card:hover { border-color: #c0d8ee; box-shadow: 0 6px 24px rgba(10,37,64,0.07); transform: translateY(-3px); }
+    .related-img { aspect-ratio: 16/9; overflow: hidden; background: var(--bg-gray); }
+    .related-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .related-card:hover .related-img img { transform: scale(1.04); }
+    .related-body { padding: 20px 20px 22px; }
+    .related-type { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue-accent); margin-bottom: 6px; }
+    .related-name { font-size: 1.1rem; font-weight: 700; color: var(--blue-deep); margin-bottom: 4px; }
+    .related-price { font-size: 0.85rem; color: var(--text-muted); }
+    .related-link { display: inline-flex; align-items: center; gap: 4px; margin-top: 14px; font-size: 0.8rem; font-weight: 600; color: var(--blue-accent); transition: gap 0.2s; }
+    .related-link:hover { gap: 8px; }
+    #footer { background: #050f1c; color: rgba(255,255,255,0.55); padding: 56px 0 32px; }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px; }
+    .footer-bottom p { font-size: 0.76rem; }
+    .footer-legal { display: flex; gap: 20px; }
+    .footer-legal a { font-size: 0.76rem; color: rgba(255,255,255,0.3); transition: color 0.2s; }
+    .footer-legal a:hover { color: rgba(255,255,255,0.6); }
+    .footer-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .footer-logo-text { font-size: 0.9rem; font-weight: 700; color: #fff; }
+    .footer-logo-text span { display: block; font-size: 0.6rem; font-weight: 400; color: rgba(255,255,255,0.35); letter-spacing: 0.08em; text-transform: uppercase; }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    @media (max-width: 900px) {
+      .product-hero-inner, .features-inner { grid-template-columns: 1fr; gap: 40px; }
+      .specs-grid { grid-template-columns: repeat(2, 1fr); }
+      .related-grid { grid-template-columns: repeat(2, 1fr); }
+      .nav { display: none; }
+      .menu-toggle { display: flex; }
+    }
+    @media (max-width: 580px) {
+      .specs-grid, .related-grid { grid-template-columns: 1fr; }
+      .cta-inner { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <header id="header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo" aria-label="BlueTech Robotics — Accueil">
+          <img src="logo.png" alt="BlueTech Robotics" style="height:52px;width:auto;border-radius:10px;" />
+        </a>
+        <nav class="nav">
+          <a href="index.html">Accueil</a>
+          <a href="index.html#produits" class="active">Produits</a>
+          <a href="index.html#technologie">Technologie</a>
+          <a href="index.html#rse">À propos</a>
+          <a href="index.html#footer">Contact</a>
+        </nav>
+        <div><a href="index.html#produits" class="btn btn-primary" style="padding:10px 22px;font-size:0.82rem;">Acheter</a></div>
+        <button class="menu-toggle" id="menuToggle" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
+      </div>
+      <nav class="mobile-nav" id="mobileNav">
+        <a href="index.html">Accueil</a>
+        <a href="index.html#produits">Produits</a>
+        <a href="index.html#technologie">Technologie</a>
+        <a href="index.html#rse">À propos</a>
+        <a href="index.html#footer">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="breadcrumb">
+    <div class="container">
+      <div class="breadcrumb-inner">
+        <a href="index.html">Accueil</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="index.html#produits">Produits</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>U Stab</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="product-hero">
+    <div class="container">
+      <div class="product-hero-inner">
+        <div class="product-hero-img reveal">
+          <img src="https://images.unsplash.com/photo-1754297813436-28cba2aec2da?auto=format&fit=crop&w=900&q=80" alt="Robot U Stab — régulateur de pH autonome BlueTech" />
+          <div class="product-hero-img-accent"></div>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <p class="product-tag">Équilibre chimique</p>
+          <h1 class="product-hero-name">U Stab</h1>
+          <p class="product-hero-tagline">Le régulateur de pH qui ne dort jamais</p>
+          <p class="product-hero-desc">
+            Le U Stab mesure en continu le pH, le chlore et le TAC de votre eau.
+            Dès qu'une valeur sort des seuils idéaux, il injecte automatiquement
+            la dose exacte de produit correcteur. Une eau cristalline et sûre,
+            sans jamais ouvrir un bidon vous-même.
+          </p>
+          <div class="product-chips">
+            <span class="chip">
+              <svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+              Mesure en continu
+            </span>
+            <span class="chip">
+              <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Triple capteur
+            </span>
+            <span class="chip">
+              <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Dosage automatique
+            </span>
+            <span class="chip">
+              <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+              Alertes temps réel
+            </span>
+          </div>
+          <div class="product-price-block">
+            <div class="product-price-label">À partir de</div>
+            <div class="product-price-value">1 490 €<span class="product-price-vat">TTC</span></div>
+          </div>
+          <div class="hero-actions">
+            <a href="index.html#footer" class="btn btn-primary">Demander un devis</a>
+            <a href="#specs" class="btn btn-outline-dark">Voir les spécifications</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="specs-section" id="specs">
+    <div class="container">
+      <h2 class="specs-title reveal">Performances techniques</h2>
+      <div class="specs-grid">
+        <div class="spec-card reveal">
+          <div class="spec-icon"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg></div>
+          <div class="spec-label">Fréquence de mesure</div>
+          <div class="spec-value">30 sec</div>
+          <div class="spec-note">Mesure pH, chlore et TAC en continu</div>
+        </div>
+        <div class="spec-card reveal reveal-delay-1">
+          <div class="spec-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div class="spec-label">Précision pH</div>
+          <div class="spec-value">± 0,05</div>
+          <div class="spec-note">Capteur électrochimique NIKKAI</div>
+        </div>
+        <div class="spec-card reveal reveal-delay-2">
+          <div class="spec-icon"><svg viewBox="0 0 24 24"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="M13 13l6 6"/></svg></div>
+          <div class="spec-label">Volume réservoir</div>
+          <div class="spec-value">2 × 5 L</div>
+          <div class="spec-note">Réservoirs pH+ et pH− séparés</div>
+        </div>
+        <div class="spec-card reveal">
+          <div class="spec-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="spec-label">Autonomie réservoir</div>
+          <div class="spec-value">~45 jours</div>
+          <div class="spec-note">Pour un bassin standard de 50 m³</div>
+        </div>
+        <div class="spec-card reveal reveal-delay-1">
+          <div class="spec-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+          <div class="spec-label">Connectivité</div>
+          <div class="spec-value">Wi-Fi + BT</div>
+          <div class="spec-note">Historique 12 mois dans l'app</div>
+        </div>
+        <div class="spec-card reveal reveal-delay-2">
+          <div class="spec-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+          <div class="spec-label">Consommation</div>
+          <div class="spec-value">24 W</div>
+          <div class="spec-note">Fonctionnement veille ultra-basse conso.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features-section">
+    <div class="container">
+      <div class="features-inner">
+        <div class="features-img reveal">
+          <img src="https://images.unsplash.com/photo-1566837945700-30057527ade0?auto=format&fit=crop&w=800&q=80" alt="Eau de piscine cristalline régulée par U Stab" loading="lazy" />
+        </div>
+        <div class="reveal reveal-delay-1">
+          <p class="section-label">Fonctionnalités</p>
+          <h2 class="section-title">Une chimie parfaite,<br>sans intervention</h2>
+          <div class="features-list">
+            <div class="feature-item">
+              <div class="feature-num">01</div>
+              <div>
+                <div class="feature-title">Triple capteur électrochimique</div>
+                <div class="feature-desc">pH, chlore libre et TAC mesurés simultanément toutes les 30 secondes. Les capteurs NIKKAI sont étalonnés en usine et valables 18 mois sans remplacement.</div>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-num">02</div>
+              <div>
+                <div class="feature-title">Dosage péristaltique de précision</div>
+                <div class="feature-desc">Les pompes péristaltiques injectent exactement la dose calculée, sans sur-dosage ni gaspillage. Économie de produits chimiques estimée à 40% vs dosage manuel.</div>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-num">03</div>
+              <div>
+                <div class="feature-title">Alertes intelligentes</div>
+                <div class="feature-desc">Notification push si le pH sort de la plage 7,2–7,6 ou si le chlore descend sous le seuil de sécurité. Intervention possible à distance depuis l'app.</div>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-num">04</div>
+              <div>
+                <div class="feature-title">Historique et rapports hebdomadaires</div>
+                <div class="feature-desc">L'application archive 12 mois de données et génère un rapport PDF hebdomadaire sur la qualité de l'eau, exportable pour votre professionnel piscine.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tech-section">
+    <div class="container">
+      <p class="section-label reveal">Détails</p>
+      <h2 class="section-title reveal">Fiche technique complète</h2>
+      <table class="tech-table reveal">
+        <thead><tr><th>Caractéristique</th><th>Valeur</th></tr></thead>
+        <tbody>
+          <tr><td>Dimensions (L × l × H)</td><td>360 × 280 × 220 mm</td></tr>
+          <tr><td>Poids</td><td>5,2 kg (réservoirs vides)</td></tr>
+          <tr><td>Paramètres mesurés</td><td>pH, chlore libre (ppm), TAC (°f)</td></tr>
+          <tr><td>Plage pH traitée</td><td>6,5 – 8,5</td></tr>
+          <tr><td>Volume des réservoirs</td><td>2 × 5 litres (pH+ / pH−)</td></tr>
+          <tr><td>Précision de mesure pH</td><td>± 0,05 unité</td></tr>
+          <tr><td>Fréquence de mesure</td><td>Toutes les 30 secondes</td></tr>
+          <tr><td>Alimentation</td><td>220-240V / 50 Hz</td></tr>
+          <tr><td>Consommation</td><td>24 W (fonctionnement) / 2 W (veille)</td></tr>
+          <tr><td>Connectivité</td><td>Wi-Fi 2,4 GHz + Bluetooth 5.0</td></tr>
+          <tr><td>Volume de bassin compatible</td><td>20 – 200 m³</td></tr>
+          <tr><td>Garantie</td><td>10 ans constructeur</td></tr>
+          <tr><td>Origine</td><td>Assemblé en France — capteurs NIKKAI (Japon)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-inner">
+        <div class="cta-text">
+          <h2>Prêt à commander le U Stab ?</h2>
+          <p>Devis gratuit personnalisé — livraison sous 72h en France métropolitaine.</p>
+        </div>
+        <a href="index.html#footer" class="btn btn-white">Demander un devis</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="related-section">
+    <div class="container">
+      <p class="section-label">Gamme BlueTech</p>
+      <h2 class="section-title">Découvrir les autres robots</h2>
+      <div class="related-grid">
+        <div class="related-card">
+          <div class="related-img"><img src="https://images.unsplash.com/photo-1754297813952-fd2ca3e9f041?auto=format&fit=crop&w=600&q=80" alt="Robot U Clean" loading="lazy" /></div>
+          <div class="related-body">
+            <div class="related-type">Nettoyage</div>
+            <div class="related-name">U Clean</div>
+            <div class="related-price">À partir de 1 190 €</div>
+            <a href="u-clean.html" class="related-link">Voir le produit <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="related-card">
+          <div class="related-img"><img src="https://images.unsplash.com/photo-1754297813652-27093ad39a2f?auto=format&fit=crop&w=600&q=80" alt="Robot U Heat" loading="lazy" /></div>
+          <div class="related-body">
+            <div class="related-type">Température</div>
+            <div class="related-name">U Heat</div>
+            <div class="related-price">À partir de 1 990 €</div>
+            <a href="u-heat.html" class="related-link">Voir le produit <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="related-card">
+          <div class="related-img"><img src="https://images.unsplash.com/photo-1754297813553-43eb3a9f65a4?auto=format&fit=crop&w=600&q=80" alt="Robot Multifonction" loading="lazy" /></div>
+          <div class="related-body">
+            <div class="related-type">Tout-en-un</div>
+            <div class="related-name">Multifonction</div>
+            <div class="related-price">À partir de 3 495 €</div>
+            <a href="multifonction.html" class="related-link">Voir le produit <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-logo">
+        <img src="logo.png" alt="BlueTech Robotics" style="height:56px;width:auto;border-radius:10px;" />
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 BlueTech Robotics SAS. Tous droits réservés.</p>
+        <div class="footer-legal"><a href="#">Mentions légales</a><a href="#">CGV</a><a href="#">Cookies</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => { header.classList.toggle('scrolled', window.scrollY > 10); }, { passive: true });
+    document.getElementById('menuToggle').addEventListener('click', () => { document.getElementById('mobileNav').classList.toggle('open'); });
+    const obs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } }); }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

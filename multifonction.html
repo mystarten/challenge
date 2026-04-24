@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multifonction — Robot tout-en-un | BlueTech Robotics</title>
+  <meta name="description" content="Le robot Multifonction BlueTech : nettoyage, régulation pH et température dans un seul appareil. La révolution de la piscine autonome. Fabriqué en France." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M20 3C20 3 7 15.5 7 24a13 13 0 0026 0C33 15.5 20 3 20 3z' fill='%230a2540'/%3E%3Ctext x='20' y='30' text-anchor='middle' fill='%2300aeef' font-family='Inter,sans-serif' font-weight='800' font-size='13'%3EBT%3C/text%3E%3C/svg%3E" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #fafafa; color: #1a1a1a; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    :root { --blue-deep: #0a2540; --blue-accent: #00aeef; --bg-gray: #f4f4f5; --text-muted: #6b7280; --border: #e5e7eb; --radius: 6px; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .btn { display: inline-block; padding: 14px 28px; font-size: 0.9rem; font-weight: 600; border-radius: var(--radius); cursor: pointer; transition: all 0.22s ease; border: 2px solid transparent; }
+    .btn-primary { background: var(--blue-accent); color: #fff; border-color: var(--blue-accent); }
+    .btn-primary:hover { background: #009dd4; transform: translateY(-1px); }
+    .btn-outline-dark { background: transparent; color: var(--blue-deep); border-color: var(--blue-deep); }
+    .btn-outline-dark:hover { background: var(--blue-deep); color: #fff; }
+    .btn-white { background: #fff; color: var(--blue-deep); border-color: #fff; }
+    .btn-white:hover { background: #f0f9ff; transform: translateY(-1px); }
+    #header { position: sticky; top: 0; z-index: 100; background: #fff; border-bottom: 1px solid transparent; transition: border-color 0.25s, box-shadow 0.25s; }
+    #header.scrolled { border-color: var(--border); box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-wordmark { font-size: 1rem; font-weight: 700; color: var(--blue-deep); letter-spacing: -0.02em; line-height: 1.2; }
+    .logo-wordmark span { display: block; font-size: 0.65rem; font-weight: 400; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; }
+    .nav { display: flex; align-items: center; gap: 32px; }
+    .nav a { font-size: 0.875rem; font-weight: 500; color: #374151; transition: color 0.2s; }
+    .nav a:hover, .nav a.active { color: var(--blue-deep); }
+    .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .menu-toggle span { display: block; width: 22px; height: 2px; background: var(--blue-deep); }
+    .mobile-nav { display: none; flex-direction: column; position: absolute; top: 68px; left: 0; right: 0; background: #fff; border-bottom: 1px solid var(--border); padding: 16px 24px 20px; gap: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a { font-size: 0.95rem; font-weight: 500; color: #374151; padding: 4px 0; }
+    .breadcrumb { padding: 16px 0; border-bottom: 1px solid var(--border); background: #fff; }
+    .breadcrumb-inner { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--text-muted); }
+    .breadcrumb-inner a { color: var(--text-muted); transition: color 0.2s; }
+    .breadcrumb-inner a:hover { color: var(--blue-deep); }
+    .breadcrumb-sep { color: #d1d5db; }
+
+    /* HERO avec badge "NOUVEAU" proéminent */
+    .product-hero { padding: 72px 0 80px; }
+    .product-hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .product-hero-img { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 4/3; background: #e8f4fb; }
+    .product-hero-img img { width: 100%; height: 100%; object-fit: cover; }
+    .product-hero-img-accent { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: var(--blue-accent); }
+    .badge-nouveau { position: absolute; top: 16px; left: 16px; background: var(--blue-accent); color: #fff; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 14px; border-radius: 2px; z-index: 2; }
+    .product-tag { display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue-accent); margin-bottom: 8px; }
+    .badge-inline { display: inline-block; background: var(--blue-accent); color: #fff; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px; border-radius: 2px; margin-left: 10px; vertical-align: middle; position: relative; top: -2px; }
+    .product-hero-name { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; color: var(--blue-deep); letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 8px; }
+    .product-hero-tagline { font-size: 1.15rem; font-weight: 500; color: #374151; margin-bottom: 20px; }
+    .product-hero-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 36px; max-width: 480px; }
+    .product-price-block { margin-bottom: 32px; }
+    .product-price-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; margin-bottom: 4px; }
+    .product-price-value { font-size: 2rem; font-weight: 800; color: var(--blue-deep); letter-spacing: -0.03em; }
+    .product-price-vat { font-size: 0.78rem; color: var(--text-muted); font-weight: 400; margin-left: 6px; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+    .product-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+    .chip { display: inline-flex; align-items: center; gap: 6px; background: #f0f9ff; border: 1px solid #bae6fd; color: #0369a1; font-size: 0.75rem; font-weight: 600; padding: 5px 12px; border-radius: 20px; }
+    .chip svg { width: 13px; height: 13px; stroke: #0369a1; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* COMPARISON SECTION — unique à Multifonction */
+    .compare-section { padding: 80px 0; background: var(--blue-deep); }
+    .compare-title { font-size: clamp(1.5rem, 2.5vw, 2rem); font-weight: 800; color: #fff; letter-spacing: -0.03em; margin-bottom: 12px; }
+    .compare-sub { font-size: 0.95rem; color: rgba(255,255,255,0.6); margin-bottom: 48px; }
+    .compare-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: rgba(255,255,255,0.08); border-radius: var(--radius); overflow: hidden; }
+    .compare-col { background: rgba(255,255,255,0.04); padding: 32px 24px; }
+    .compare-col.highlight { background: rgba(0,174,239,0.12); border: 1px solid rgba(0,174,239,0.3); position: relative; }
+    .compare-col-badge { position: absolute; top: -1px; left: 50%; transform: translateX(-50%); background: var(--blue-accent); color: #fff; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 16px; border-radius: 0 0 4px 4px; }
+    .compare-col-name { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 4px; margin-top: 16px; }
+    .compare-col-price { font-size: 0.82rem; color: rgba(255,255,255,0.45); margin-bottom: 24px; }
+    .compare-feature { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.82rem; color: rgba(255,255,255,0.65); }
+    .compare-feature:last-child { border-bottom: none; }
+    .check { color: #4ade80; flex-shrink: 0; }
+    .cross { color: rgba(255,255,255,0.2); flex-shrink: 0; }
+
+    .specs-section { padding: 80px 0; background: var(--bg-gray); }
+    .specs-title { font-size: 1.6rem; font-weight: 800; color: var(--blue-deep); letter-spacing: -0.03em; margin-bottom: 48px; }
+    .specs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .spec-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 24px; }
+    .spec-icon { width: 44px; height: 44px; background: #f0f9ff; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .spec-icon svg { width: 22px; height: 22px; stroke: var(--blue-accent); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .spec-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+    .spec-value { font-size: 1.4rem; font-weight: 700; color: var(--blue-deep); letter-spacing: -0.02em; margin-bottom: 4px; }
+    .spec-note { font-size: 0.78rem; color: var(--text-muted); }
+    .features-section { padding: 80px 0; }
+    .features-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .features-img { border-radius: var(--radius); overflow: hidden; aspect-ratio: 1; }
+    .features-img img { width: 100%; height: 100%; object-fit: cover; }
+    .features-list { display: flex; flex-direction: column; gap: 32px; }
+    .feature-item { display: flex; gap: 20px; align-items: flex-start; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+    .feature-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .feature-num { font-size: 0.7rem; font-weight: 700; color: var(--blue-accent); letter-spacing: 0.05em; min-width: 24px; padding-top: 3px; }
+    .feature-title { font-size: 0.95rem; font-weight: 700; color: var(--blue-deep); margin-bottom: 6px; }
+    .feature-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+    .tech-section { padding: 80px 0; background: var(--bg-gray); }
+    .tech-table { width: 100%; border-collapse: collapse; margin-top: 40px; }
+    .tech-table th { text-align: left; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); padding: 12px 16px; background: #edf2f7; border-bottom: 2px solid var(--border); }
+    .tech-table td { padding: 14px 16px; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+    .tech-table tr:last-child td { border-bottom: none; }
+    .tech-table td:first-child { color: var(--text-muted); font-weight: 500; width: 40%; }
+    .tech-table td:last-child { color: var(--blue-deep); font-weight: 600; }
+    .tech-table tr:hover td { background: #f9fafb; }
+    .cta-section { padding: 80px 0; background: var(--blue-accent); }
+    .cta-inner-centered { text-align: center; }
+    .cta-inner-centered h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 800; color: #fff; letter-spacing: -0.03em; margin-bottom: 10px; }
+    .cta-inner-centered p { font-size: 1rem; color: rgba(255,255,255,0.8); margin-bottom: 32px; }
+    .related-section { padding: 80px 0; }
+    .section-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue-accent); margin-bottom: 12px; }
+    .section-title { font-size: clamp(1.5rem, 2.5vw, 2rem); font-weight: 800; color: var(--blue-deep); letter-spacing: -0.03em; margin-bottom: 40px; }
+    .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .related-card { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s; }
+    .related-card:hover { border-color: #c0d8ee; box-shadow: 0 6px 24px rgba(10,37,64,0.07); transform: translateY(-3px); }
+    .related-img { aspect-ratio: 16/9; overflow: hidden; background: var(--bg-gray); }
+    .related-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .related-card:hover .related-img img { transform: scale(1.04); }
+    .related-body { padding: 20px 20px 22px; }
+    .related-type { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue-accent); margin-bottom: 6px; }
+    .related-name { font-size: 1.1rem; font-weight: 700; color: var(--blue-deep); margin-bottom: 4px; }
+    .related-price { font-size: 0.85rem; color: var(--text-muted); }
+    .related-link { display: inline-flex; align-items: center; gap: 4px; margin-top: 14px; font-size: 0.8rem; font-weight: 600; color: var(--blue-accent); transition: gap 0.2s; }
+    .related-link:hover { gap: 8px; }
+    #footer { background: #050f1c; color: rgba(255,255,255,0.55); padding: 56px 0 32px; }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px; }
+    .footer-bottom p { font-size: 0.76rem; }
+    .footer-legal { display: flex; gap: 20px; }
+    .footer-legal a { font-size: 0.76rem; color: rgba(255,255,255,0.3); transition: color 0.2s; }
+    .footer-legal a:hover { color: rgba(255,255,255,0.6); }
+    .footer-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .footer-logo-text { font-size: 0.9rem; font-weight: 700; color: #fff; }
+    .footer-logo-text span { display: block; font-size: 0.6rem; font-weight: 400; color: rgba(255,255,255,0.35); letter-spacing: 0.08em; text-transform: uppercase; }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    @media (max-width: 900px) {
+      .product-hero-inner, .features-inner { grid-template-columns: 1fr; gap: 40px; }
+      .specs-grid { grid-template-columns: repeat(2, 1fr); }
+      .related-grid { grid-template-columns: repeat(2, 1fr); }
+      .compare-grid { grid-template-columns: 1fr; gap: 1px; }
+      .nav { display: none; }
+      .menu-toggle { display: flex; }
+    }
+    @media (max-width: 580px) { .specs-grid, .related-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <header id="header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo" aria-label="BlueTech Robotics — Accueil">
+          <img src="logo.png" alt="BlueTech Robotics" style="height:52px;width:auto;border-radius:10px;" />
+        </a>
+        <nav class="nav">
+          <a href="index.html">Accueil</a>
+          <a href="index.html#produits" class="active">Produits</a>
+          <a href="index.html#technologie">Technologie</a>
+          <a href="index.html#rse">À propos</a>
+          <a href="index.html#footer">Contact</a>
+        </nav>
+        <div><a href="index.html#footer" class="btn btn-primary" style="padding:10px 22px;font-size:0.82rem;">Demander un devis</a></div>
+        <button class="menu-toggle" id="menuToggle" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
+      </div>
+      <nav class="mobile-nav" id="mobileNav">
+        <a href="index.html">Accueil</a>
+        <a href="index.html#produits">Produits</a>
+        <a href="index.html#technologie">Technologie</a>
+        <a href="index.html#rse">À propos</a>
+        <a href="index.html#footer">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="breadcrumb">
+    <div class="container">
+      <div class="breadcrumb-inner">
+        <a href="index.html">Accueil</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="index.html#produits">Produits</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Multifonction</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="product-hero">
+    <div class="container">
+      <div class="product-hero-inner">
+        <div class="product-hero-img reveal">
+          <span class="badge-nouveau">Nouveau</span>
+          <img src="https://images.unsplash.com/photo-1754297813553-43eb3a9f65a4?auto=format&fit=crop&w=900&q=80" alt="Robot Multifonction BlueTech — tout-en-un nettoyage pH température" />
+          <div class="product-hero-img-accent"></div>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <p class="product-tag">Tout-en-un</p>
+          <h1 class="product-hero-name">Multifonction <span class="badge-inline">Nouveau</span></h1>
+          <p class="product-hero-tagline">La révolution : trois robots en un seul</p>
+          <p class="product-hero-desc">
+            Le Multifonction intègre l'ensemble des technologies U Clean, U Stab et
+            U Heat dans un seul châssis compact. Une installation, une application,
+            zéro compromis. Votre piscine est propre, équilibrée chimiquement et
+            à température idéale — sans aucune intervention de votre part.
+          </p>
+          <div class="product-chips">
+            <span class="chip"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Nettoyage autonome</span>
+            <span class="chip"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>Régulation pH</span>
+            <span class="chip"><svg viewBox="0 0 24 24"><path d="M14 14.76V3.5a2.5 2.5 0 00-5 0v11.26a4.5 4.5 0 105 0z"/></svg>Contrôle thermique</span>
+            <span class="chip"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>App unifiée</span>
+          </div>
+          <div class="product-price-block">
+            <div class="product-price-label">À partir de</div>
+            <div class="product-price-value">3 495 €<span class="product-price-vat">TTC</span></div>
+          </div>
+          <div class="hero-actions">
+            <a href="index.html#footer" class="btn btn-primary">Demander un devis</a>
+            <a href="#comparaison" class="btn btn-outline-dark">Voir la comparaison</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARAISON -->
+  <section class="compare-section" id="comparaison">
+    <div class="container">
+      <p class="section-label" style="color:rgba(0,174,239,0.8);">Pourquoi choisir le Multifonction ?</p>
+      <h2 class="compare-title reveal">Trois robots achetés séparément,<br>ou un seul Multifonction.</h2>
+      <p class="compare-sub reveal">Le choix est vite fait.</p>
+      <div class="compare-grid reveal">
+        <!-- Col 1 : séparés -->
+        <div class="compare-col">
+          <div class="compare-col-name">U Clean + U Stab + U Heat</div>
+          <div class="compare-col-price">À partir de 4 670 € · 3 installations</div>
+          <div class="compare-feature"><span class="check">✓</span> Nettoyage du fond et parois</div>
+          <div class="compare-feature"><span class="check">✓</span> Régulation pH automatique</div>
+          <div class="compare-feature"><span class="check">✓</span> Contrôle de température</div>
+          <div class="compare-feature"><span class="cross">✗</span> Application unifiée</div>
+          <div class="compare-feature"><span class="cross">✗</span> Installation unique</div>
+          <div class="compare-feature"><span class="cross">✗</span> Pilotage coordonné inter-modules</div>
+          <div class="compare-feature"><span class="cross">✗</span> Maintenance centralisée</div>
+        </div>
+        <!-- Col 2 : Multifonction (highlight) -->
+        <div class="compare-col highlight">
+          <span class="compare-col-badge">Recommandé</span>
+          <div class="compare-col-name">Multifonction</div>
+          <div class="compare-col-price">À partir de 3 495 € · 1 installation</div>
+          <div class="compare-feature"><span class="check">✓</span> Nettoyage du fond et parois</div>
+          <div class="compare-feature"><span class="check">✓</span> Régulation pH automatique</div>
+          <div class="compare-feature"><span class="check">✓</span> Contrôle de température</div>
+          <div class="compare-feature"><span class="check">✓</span> Application unifiée</div>
+          <div class="compare-feature"><span class="check">✓</span> Installation unique</div>
+          <div class="compare-feature"><span class="check">✓</span> Pilotage coordonné inter-modules</div>
+          <div class="compare-feature"><span class="check">✓</span> Maintenance centralisée</div>
+        </div>
+        <!-- Col 3 : concurrence générique -->
+        <div class="compare-col">
+          <div class="compare-col-name">Robots concurrents</div>
+          <div class="compare-col-price">Prix variable · Support limité</div>
+          <div class="compare-feature"><span class="check">✓</span> Nettoyage du fond et parois</div>
+          <div class="compare-feature"><span class="cross">✗</span> Régulation pH automatique</div>
+          <div class="compare-feature"><span class="cross">✗</span> Contrôle de température</div>
+          <div class="compare-feature"><span class="cross">✗</span> Application unifiée</div>
+          <div class="compare-feature"><span class="cross">✗</span> Installation unique</div>
+          <div class="compare-feature"><span class="cross">✗</span> Pilotage coordonné inter-modules</div>
+          <div class="compare-feature"><span class="cross">✗</span> Garantie 10 ans constructeur</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPECS -->
+  <section class="specs-section" id="specs">
+    <div class="container">
+      <h2 class="specs-title reveal">Tout dans un seul robot</h2>
+      <div class="specs-grid">
+        <div class="spec-card reveal">
+          <div class="spec-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <div class="spec-label">Cycle de nettoyage</div>
+          <div class="spec-value">2h30</div>
+          <div class="spec-note">Fond, parois, ligne d'eau — 120 m²/h</div>
+        </div>
+        <div class="spec-card reveal reveal-delay-1">
+          <div class="spec-icon"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg></div>
+          <div class="spec-label">Précision pH</div>
+          <div class="spec-value">± 0,05</div>
+          <div class="spec-note">Mesure toutes les 30 secondes</div>
+        </div>
+        <div class="spec-card reveal reveal-delay-2">
+          <div class="spec-icon"><svg viewBox="0 0 24 24"><path d="M14 14.76V3.5a2.5 2.5 0 00-5 0v11.26a4.5 4.5 0 105 0z"/></svg></div>
+          <div class="spec-label">COP thermique</div>
+          <div class="spec-value">5,8</div>
+          <div class="spec-note">Pompe à chaleur R32 intégrée</div>
+        </div>
+        <div class="spec-card reveal">
+          <div class="spec-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+          <div class="spec-label">Application</div>
+          <div class="spec-value">1 seule</div>
+          <div class="spec-note">Contrôle unifié iOS & Android</div>
+        </div>
+        <div class="spec-card reveal reveal-delay-1">
+          <div class="spec-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div class="spec-label">Étanchéité</div>
+          <div class="spec-value">IP68</div>
+          <div class="spec-note">Certifié jusqu'à 10 m</div>
+        </div>
+        <div class="spec-card reveal reveal-delay-2">
+          <div class="spec-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="spec-label">Garantie</div>
+          <div class="spec-value">10 ans</div>
+          <div class="spec-note">Garantie constructeur complète</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features-section">
+    <div class="container">
+      <div class="features-inner">
+        <div class="features-img reveal">
+          <img src="https://images.unsplash.com/photo-1749809919411-9f98a792453e?auto=format&fit=crop&w=800&q=80" alt="Robot Multifonction BlueTech en action dans une piscine" loading="lazy" />
+        </div>
+        <div class="reveal reveal-delay-1">
+          <p class="section-label">Ce qui change tout</p>
+          <h2 class="section-title">Une coordination<br>que 3 robots séparés<br>ne peuvent pas offrir</h2>
+          <div class="features-list">
+            <div class="feature-item">
+              <div class="feature-num">01</div>
+              <div>
+                <div class="feature-title">Orchestration intelligente des 3 modules</div>
+                <div class="feature-desc">Le Multifonction synchronise ses 3 fonctions : il ne chauffe pas pendant le nettoyage pour ne pas perturber les capteurs pH, et optimise l'ordre des tâches selon votre planning.</div>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-num">02</div>
+              <div>
+                <div class="feature-title">Une installation, 30 minutes chrono</div>
+                <div class="feature-desc">Un seul raccordement hydraulique, une seule prise secteur, un seul appairage Wi-Fi. Là où 3 robots séparés nécessitent 3 fois l'intervention d'un technicien.</div>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-num">03</div>
+              <div>
+                <div class="feature-title">Tableau de bord unifié en temps réel</div>
+                <div class="feature-desc">L'application affiche simultanément la propreté du bassin, le pH actuel, la température de l'eau et la prévision météo. Tout l'état de votre piscine en un coup d'œil.</div>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-num">04</div>
+              <div>
+                <div class="feature-title">Économie par rapport à l'achat séparé</div>
+                <div class="feature-desc">Le Multifonction coûte 1 175 € de moins que l'achat combiné des trois robots. Soit une économie de 25% — à fonctionnalités identiques, garantie identique.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FICHE TECHNIQUE -->
+  <section class="tech-section">
+    <div class="container">
+      <p class="section-label reveal">Détails</p>
+      <h2 class="section-title reveal">Fiche technique complète</h2>
+      <table class="tech-table reveal">
+        <thead><tr><th>Caractéristique</th><th>Valeur</th></tr></thead>
+        <tbody>
+          <tr><td>Dimensions (L × l × H)</td><td>520 × 400 × 320 mm</td></tr>
+          <tr><td>Poids hors eau</td><td>14,8 kg</td></tr>
+          <tr><td>Module nettoyage — capacité panier</td><td>3,8 litres (filtration 50 µm)</td></tr>
+          <tr><td>Module pH — réservoirs</td><td>2 × 5 litres (pH+ / pH−)</td></tr>
+          <tr><td>Module thermique — puissance</td><td>10 kW (COP 5,8)</td></tr>
+          <tr><td>Plage de chauffe</td><td>10 – 40°C (± 0,2°C)</td></tr>
+          <tr><td>Volume de bassin compatible</td><td>20 – 80 m³</td></tr>
+          <tr><td>Étanchéité</td><td>IP68 — certifié 10 m</td></tr>
+          <tr><td>Alimentation</td><td>Monophasé 220-240V / 50 Hz</td></tr>
+          <tr><td>Consommation totale max.</td><td>2,4 kW (en charge complète)</td></tr>
+          <tr><td>Connectivité</td><td>Wi-Fi 2,4 GHz + Bluetooth 5.0</td></tr>
+          <tr><td>Compatibilité piscines</td><td>Béton, liner, carrelage, coque polyester</td></tr>
+          <tr><td>Garantie</td><td>10 ans constructeur (tous modules)</td></tr>
+          <tr><td>Origine</td><td>Assemblé en France — composants NIKKAI (Japon), AZ1 (Allemagne)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-inner-centered reveal">
+        <h2>Passez au tout-en-un.</h2>
+        <p>Devis personnalisé gratuit. Livraison et installation sous 72h.</p>
+        <a href="index.html#footer" class="btn btn-white">Demander un devis gratuit</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- RELATED -->
+  <section class="related-section">
+    <div class="container">
+      <p class="section-label">Gamme BlueTech</p>
+      <h2 class="section-title">Préférez-vous une gamme ciblée ?</h2>
+      <div class="related-grid">
+        <div class="related-card">
+          <div class="related-img"><img src="https://images.unsplash.com/photo-1754297813952-fd2ca3e9f041?auto=format&fit=crop&w=600&q=80" alt="Robot U Clean" loading="lazy" /></div>
+          <div class="related-body">
+            <div class="related-type">Nettoyage</div>
+            <div class="related-name">U Clean</div>
+            <div class="related-price">À partir de 1 190 €</div>
+            <a href="u-clean.html" class="related-link">Voir le produit <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="related-card">
+          <div class="related-img"><img src="https://images.unsplash.com/photo-1754297813436-28cba2aec2da?auto=format&fit=crop&w=600&q=80" alt="Robot U Stab" loading="lazy" /></div>
+          <div class="related-body">
+            <div class="related-type">Équilibre chimique</div>
+            <div class="related-name">U Stab</div>
+            <div class="related-price">À partir de 1 490 €</div>
+            <a href="u-stab.html" class="related-link">Voir le produit <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="related-card">
+          <div class="related-img"><img src="https://images.unsplash.com/photo-1754297813652-27093ad39a2f?auto=format&fit=crop&w=600&q=80" alt="Robot U Heat" loading="lazy" /></div>
+          <div class="related-body">
+            <div class="related-type">Température</div>
+            <div class="related-name">U Heat</div>
+            <div class="related-price">À partir de 1 990 €</div>
+            <a href="u-heat.html" class="related-link">Voir le produit <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-logo">
+        <img src="logo.png" alt="BlueTech Robotics" style="height:56px;width:auto;border-radius:10px;" />
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 BlueTech Robotics SAS. Tous droits réservés.</p>
+        <div class="footer-legal"><a href="#">Mentions légales</a><a href="#">CGV</a><a href="#">Cookies</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => { header.classList.toggle('scrolled', window.scrollY > 10); }, { passive: true });
+    document.getElementById('menuToggle').addEventListener('click', () => { document.getElementById('mobileNav').classList.toggle('open'); });
+    const obs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } }); }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
